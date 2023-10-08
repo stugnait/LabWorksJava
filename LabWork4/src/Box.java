@@ -8,4 +8,5 @@ public class Box <T>{
     public void DeleteThing(T thing) {
         list.remove(thing);
     }
+
 }
