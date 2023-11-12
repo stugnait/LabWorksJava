@@ -1,14 +1,23 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
-    public static void main(String[] args) {
+    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/labwork6";
+    static final String USER = "root";
+    static final String PASS = "root";
+
+    public static void main(String[] args) throws SQLException {
 
         Scanner scanner = new Scanner(System.in);
+
+        Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
 
         for (; ; ) {
             try {
@@ -24,44 +33,47 @@ public class Main {
                         switch (choose) {
                             case 1: {
 
-                                List<String> cars = Files.readAllLines(Paths.get(MainFunctional.carsPath));
-
-                                String[] temporaryArray = new String[11];
-
-                                Arrays.fill(temporaryArray, "0");
-
-                                temporaryArray[0] = String.valueOf(cars.size());
-
                                 System.out.println("Mark");
-                                temporaryArray[1] = String.valueOf(scanner.next());
+                                String mark = scanner.next();
 
                                 System.out.println("Model");
-                                temporaryArray[2] = String.valueOf(scanner.next());
+                                String model = scanner.next();
 
                                 System.out.println("Fuel Type");
-                                temporaryArray[3] = String.valueOf(scanner.next());
+                                String fuelType = scanner.next();
 
                                 System.out.println("BodyType");
-                                temporaryArray[4] = String.valueOf(scanner.next());
+                                String bodyType = scanner.next();
 
                                 System.out.println("Colour");
-                                temporaryArray[5] = String.valueOf(scanner.next());
+                                String color = scanner.next();
 
                                 System.out.println("Licence Plate");
-                                temporaryArray[6] = String.valueOf(scanner.next());
+                                String licencePlate = scanner.next();
 
                                 System.out.println("Max Passengers");
-                                temporaryArray[7] = String.valueOf(scanner.next());
+                                int maxPassengers = scanner.nextInt();
 
                                 System.out.println("Max Weight");
-                                temporaryArray[8] = String.valueOf(scanner.next());
+                                int maxWeight = scanner.nextInt();
 
-                                Car car = new Car(temporaryArray);
+                                String query = "INSERT INTO cars (mark, model, fuelType, bodyType, color, licencePlate, maxPassengers, maxWeight) " +
+                                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-                                Files.writeString(Paths.get(MainFunctional.carsPath), Files.readString(Paths.get(MainFunctional.carsPath)) + car.ToSaveFormat());
-                                Files.writeString(Paths.get(MainFunctional.licencePath), Files.readString(Paths.get(MainFunctional.licencePath)) + car.ToMainSaveFormat());
+                                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                                    // Set values for placeholders
+                                    preparedStatement.setString(1, mark);
+                                    preparedStatement.setString(2, model);
+                                    preparedStatement.setString(3, fuelType);
+                                    preparedStatement.setString(4, bodyType);
+                                    preparedStatement.setString(5, color);
+                                    preparedStatement.setString(6, licencePlate);
+                                    preparedStatement.setInt(7, maxPassengers);
+                                    preparedStatement.setInt(8, maxWeight);
 
-                                break;
+                                    preparedStatement.executeUpdate();
+                                }
+                                System.out.println("Data inserted successfully!");
                             }
                             case 2: {
 
@@ -354,7 +366,7 @@ public class Main {
                                 StringBuilder clientOutput = new StringBuilder();
 
                                 for (Client client: clients){
-                                    driverOutput.append(client.ToSaveFormat());
+                                    clientOutput.append(client.ToSaveFormat());
                                 }
 
                                 Files.writeString(Paths.get(MainFunctional.carsPath), clientOutput);

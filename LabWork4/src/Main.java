@@ -55,7 +55,7 @@ public class Main {
         }
     }
 
-    class UnboundedWildcard {
+    static class UnboundedWildcard {
         public static void PrintAll(List<?> list) {
             System.out.println(list);
         }
