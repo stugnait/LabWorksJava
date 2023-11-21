@@ -76,15 +76,12 @@ public class Main {
 
                             switch (deleteType) {
                                 case 1:
-                                    // Delete car from the database
                                     deleteCar(connection, scanner);
                                     break;
                                 case 2:
-                                    // Delete driver from the database
                                     deleteDriver(connection, scanner);
                                     break;
                                 case 3:
-                                    // Delete client from the database
                                     deleteClient(connection,  scanner);
                                     break;
                                 default:
@@ -103,8 +100,6 @@ public class Main {
             e.printStackTrace();
         }
     }
-
-    // Methods for inserting data into the database
 
 
     private static void insertCarData(Connection connection, Scanner scanner) throws SQLException {
@@ -185,7 +180,7 @@ public class Main {
         System.out.println("PhoneNumber");
         String phoneNumber = scanner.next();
 
-        String query = "INSERT INTO clients (name, birthday, phoneNumber) " +
+        String query = "INSERT INTO clients (fullname, birthdate, phoneNumber) " +
                 "VALUES (?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {

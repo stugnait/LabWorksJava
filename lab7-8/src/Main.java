@@ -1,9 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+
 
 public class Main {
     public static Store store;
@@ -12,21 +9,14 @@ public class Main {
     public static ArrayList<Thread> customerThreads;
 
     public static void main(String[] args) {
+
         store = new Store();
         customers = new ArrayList<>(List.of(new Customer("Ivan", store),
                 new Customer("John", store),
                 new Customer("Victor", store),
-                new Customer("Oleg", store),
-                new Customer("Daryna", store),
-                new Customer("Vitalina", store),
-                new Customer("Vitaliy", store),
-                new Customer("Ira", store),
-                new Customer("Paul", store),
-                new Customer("Jack", store),
-                new Customer("Mike", store),
-                new Customer("Andrew", store),
-                new Customer("Tanya", store),
-                new Customer("Oleksandr", store)
+                new Customer("Kitsya", store),
+                new Customer("Killigoy", store),
+                new Customer("Harry", store)
         ));
 
         customerThreads = new ArrayList<>();
@@ -42,7 +32,7 @@ public class Main {
         deliveryThread.start();
 
         try {
-            Thread.sleep(60000);
+            Thread.sleep(600000);
 
             deliveryThread.interrupt();
 
